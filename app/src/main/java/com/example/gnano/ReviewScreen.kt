@@ -57,7 +57,7 @@ fun ReviewScreen(
     )
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("AI Object Finder & Reviewer") }) }
+        topBar = { TopAppBar(title = { Text("Product's Review") }) }
     ) { padding ->
         Column(
             modifier = Modifier

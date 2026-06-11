@@ -2,7 +2,6 @@ package com.example.gnano
 
 import android.graphics.Bitmap
 import com.example.gnano.common.Constants
-import com.example.gnano.common.Constants.API_KEY
 import com.example.gnano.models.DetectionResult
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.BlockThreshold
@@ -18,7 +17,7 @@ class CloudObjectDetectionService {
 
     private val model = GenerativeModel(
         modelName = "gemini-3-flash-preview",
-        apiKey = API_KEY,
+        apiKey = BuildConfig.GEMINI_API_KEY,
         generationConfig = generationConfig {
             responseMimeType = "application/json"
         },
