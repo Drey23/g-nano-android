@@ -1,6 +1,5 @@
 package com.example.gnano.common
 
 object Constants {
-
-    const val API_KEY = "AQ.Ab8RN6KN2sQ3pVmV7OJrroi071a3ZjR3fxYwCJrgQjcc2vTqBw"
+    // API_KEY has been moved to local.properties and is accessed via BuildConfig.GEMINI_API_KEY
 }

@@ -1,7 +1,6 @@
 package com.example.gnano
 
 import android.graphics.Bitmap
-import com.example.gnano.common.Constants.API_KEY
 import com.example.gnano.ui.theme.Constants
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.BlockThreshold
@@ -21,7 +20,7 @@ class EdgeModerationService {
 
     private val model = GenerativeModel(
         modelName = "gemini-3-flash-preview",
-        apiKey = API_KEY, // PLEASE REPLACE THIS WITH YOUR REAL KEY
+        apiKey = BuildConfig.GEMINI_API_KEY, // PLEASE REPLACE THIS WITH YOUR REAL KEY
         generationConfig = generationConfig {
             responseMimeType = "application/json" // <--- This forces clean JSON output
         },
