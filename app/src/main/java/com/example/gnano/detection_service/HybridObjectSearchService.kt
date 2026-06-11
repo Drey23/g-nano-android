@@ -16,12 +16,23 @@ class HybridObjectSearchService {
     ): DetectionResult {
 
         println("🚀 Attempting Native On-Device Analysis...")
-        val nativeResult = nativeService.findObjectInImageOffline(bitmap, targetObject, reviewString)
 
-        // If Native fails (e.g., model not downloaded, older phone, or memory crash)
+        // Create a software copy to pass to the native service.
+        // This prevents the "recycled bitmap" error if the SDK clears it internally.
+        val nativeBitmap = bitmap.copy(bitmap.config ?: Bitmap.Config.ARGB_8888, false)
+
+        val nativeResult = nativeService.findObjectInImageOffline(nativeBitmap, targetObject, reviewString)
+
+        // If it's a safety block, stop here and return the result immediately.
+        if (!nativeResult.isReviewSafe || nativeResult.details.contains("Safety Block")) {
+            println("🛑 Native Safety Block detected. Stopping analysis.")
+            return nativeResult
+        }
+
+        // If Native fails technically (e.g., model not downloaded or memory crash), bounce to Cloud.
         val errorMessage = nativeResult.details.lowercase()
-        if (errorMessage.contains("fail") || errorMessage.contains("error")) {
-            println("⚠️ Native failed or unsupported. Bouncing to Gemini Cloud.")
+        if (errorMessage.contains("failure") || errorMessage.contains("error")) {
+            println("⚠️ Native technical failure: ${nativeResult.details}. Bouncing to Gemini Cloud.")
             return cloudService.findObjectInImage(bitmap, targetObject, reviewString)
         }
 

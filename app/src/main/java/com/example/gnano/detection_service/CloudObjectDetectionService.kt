@@ -74,12 +74,12 @@ class CloudObjectDetectionService {
         try {
             val response = model.generateContent(inputContent)
 
-            // Check for OS-level safety blocks from the cloud
+            // Check for safety blocks from the cloud
             response.promptFeedback?.blockReason?.let {
                 return@withContext DetectionResult(
                     isFound = false,
                     isReviewSafe = false,
-                    details = "System Block: Content violates severe safety policies."
+                    details = "Safety Block: The review or image violates safety policies."
                 )
             }
 
@@ -90,11 +90,14 @@ class CloudObjectDetectionService {
             return@withContext parseDetectionJson(responseText)
 
         } catch (e: Exception) {
-            DetectionResult(
-                isFound = false,
-                isReviewSafe = false,
-                details = "Cloud API error: ${e.localizedMessage}"
-            )
+            val errorMessage = e.localizedMessage ?: "Unknown error"
+            val detail = if (errorMessage.contains("SAFETY", ignoreCase = true)) {
+                "Safety Block: The content violates safety policies (e.g. profanity)."
+            } else {
+                "Cloud API error: $errorMessage"
+            }
+            
+            DetectionResult(isFound = false, isReviewSafe = false, details = detail)
         }
     }
 

@@ -64,11 +64,17 @@ class NativeObjectDetectionService {
             parseDetectionJson(resultText)
 
         } catch (e: Exception) {
-            // If Android OS Safety blocks the prompt, it throws an exception here
+            val message = e.message ?: ""
+            val isSafetyBlock = message.contains("ErrorCode 4") || message.contains("policy", ignoreCase = true)
+            
             DetectionResult(
                 isFound = false,
-                isReviewSafe = false,
-                details = "Native processing failed or blocked by on-device safety filters: ${e.message}"
+                isReviewSafe = !isSafetyBlock, // false if it's a safety block
+                details = if (isSafetyBlock) {
+                    "Safety Block: The content contains profanity or other material that violates on-device safety policies."
+                } else {
+                    "Native technical failure: $message"
+                }
             )
         }
     }
