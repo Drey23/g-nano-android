@@ -1,8 +1,11 @@
-package com.example.gnano
+package com.example.gnano.detection_service
 
 import android.graphics.Bitmap
 import com.example.gnano.models.DetectionResult
-import com.google.mlkit.genai.prompt.*
+import com.google.mlkit.genai.prompt.Generation
+import com.google.mlkit.genai.prompt.ImagePart
+import com.google.mlkit.genai.prompt.TextPart
+import com.google.mlkit.genai.prompt.generateContentRequest
 import org.json.JSONObject
 
 class NativeObjectDetectionService {

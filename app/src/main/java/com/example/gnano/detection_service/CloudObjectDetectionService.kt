@@ -1,7 +1,7 @@
-package com.example.gnano
+package com.example.gnano.detection_service
 
 import android.graphics.Bitmap
-import com.example.gnano.common.Constants
+import com.example.gnano.BuildConfig
 import com.example.gnano.models.DetectionResult
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.BlockThreshold
@@ -36,7 +36,11 @@ class CloudObjectDetectionService {
     ): DetectionResult = withContext(Dispatchers.IO) {
 
         if (targetObject.trim().isEmpty()) {
-            return@withContext DetectionResult(false, false, "Please enter an object to search for.")
+            return@withContext DetectionResult(
+                false,
+                false,
+                "Please enter an object to search for."
+            )
         }
         if (reviewString.trim().isEmpty()) {
             return@withContext DetectionResult(false, false, "Please enter the product's review.")

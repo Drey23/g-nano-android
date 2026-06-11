@@ -1,6 +1,7 @@
-package com.example.gnano
+package com.example.gnano.detection_service
 
 import android.graphics.Bitmap
+import com.example.gnano.detection_service.NativeObjectDetectionService
 import com.example.gnano.models.DetectionResult
 
 class HybridObjectSearchService {
